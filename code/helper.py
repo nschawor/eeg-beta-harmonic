@@ -10,6 +10,24 @@ from params import SSD_DIR, CSV_DIR, SPEC_NR_SECONDS, \
 
 def percentile_spectrum(raw, band=(8, 12), nr_lines=5, i_chan=0,
                         nr_seconds=SPEC_NR_SECONDS):
+    """ Function to compute the percentile spectrum: Cut the given signal into
+    segments of [nr_seconds] length. Compute PSD for each segment. Sort the
+    segments according to the power in a given frequency band. Divide into
+    percentile groups and compute the average PSD for each group.
+
+    Parameters
+    ----------
+        band [2 x 1]: frequency band for sorting the PSDs
+        nr_lines (int): number of groups
+        i_chan (int): channel index
+        nr_seconds: segment length
+
+    Returns
+    -------
+        psd_perc (array): percentile spectrum
+        freq (array): frequency axis of computed spectrum
+
+    """
 
     events = mne.make_fixed_length_events(raw,
                                           start=0,
