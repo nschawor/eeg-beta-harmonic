@@ -3,13 +3,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 import mne
 from params import DATA_DIR, BETA_FMIN, BETA_FMAX, ALPHA_FMIN, \
-    ALPHA_FMAX, FIG_WIDTH, FIG_DIR, SPEC_NR_SECONDS
+    ALPHA_FMAX, FIG_WIDTH, FIG_DIR, SPEC_NR_SECONDS, SPEC_NR_PEAKS
 from helper import percentile_spectrum, get_participant_list, despine
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import matplotlib.gridspec as gridspec
 import scipy.stats
 import matplotlib.ticker as mticker
-
+import fooof
 plt.rc('axes.formatter', useoffset=False)
 plt.style.use('figures.mplstyle')
 
@@ -42,6 +42,19 @@ for i_sub, subject in enumerate(subjects):
     aband = [ALPHA_FMIN, ALPHA_FMAX]
     idx_freq = (freq > aband[0]) & (freq < aband[1])
     alpha1 = np.mean(psd_perc[:, idx_freq], axis=1)
+    
+    # compute 1/f-correction on percentile spectrum
+    psd_corr = np.zeros_like(psd_perc)
+    for i_p in range(psd_perc.shape[0]):
+        fm = fooof.FOOOF(max_n_peaks=SPEC_NR_PEAKS)
+        fm.fit(freqs=freq, power_spectrum=psd_perc[i_p])
+        psd_corr[i_p] = fm.power_spectrum - fm._ap_fit
+
+    beta1 = np.mean(psd_corr[:, (freq > band[0]) & (freq < band[1])], axis=1)
+
+    aband = [ALPHA_FMIN, ALPHA_FMAX]
+    idx_freq = (freq > aband[0]) & (freq < aband[1])
+    alpha1 = np.mean(psd_corr[:, idx_freq], axis=1)
 
     corr[i_sub], corr_p[i_sub] = scipy.stats.spearmanr(alpha1, beta1)
 

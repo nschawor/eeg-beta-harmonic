@@ -4,7 +4,7 @@ This repository provides analysis code to visualize beta-activity in a large ope
 
 ## Reference
 
-Schaworonkow, N. (2023). Overcoming harmonic hurdles: genuine beta-band rhythms vs. contributions of alpha-band waveform shape. Retrieved from ![psyarxiv.com/ywv8s](psyarxiv.com/ywv8s)
+Schaworonkow, N.: Overcoming harmonic hurdles: genuine beta-band rhythms vs. contributions of alpha-band waveform shape. Imaging Neuroscience (2023). Retrieved from ![https://direct.mit.edu/imag/article/doi/10.1162/imag_a_00018/](direct.mit.edu/imag/article/doi/10.1162/imag_a_00018)
 
 ## Dataset
 
